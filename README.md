@@ -21,7 +21,12 @@ SCSS files need to be imported into your JS so that webpack may compile them.
 - `console.js` formats the code for the browser console - paste it there for a low-tech local development solution
 
 ## Node proxy server
-The high tech version! (to be continued...)
+- Run `npm run proxy` in a separate console to start a local proxy server at `127.0.0.1:8001`.
+- You watch the traffic going through it at `http://localhost:8002`
+- Use the SwitchyOmega Chrome extension and configure it to use the above proxy server
+- Any requests to matched domains listed in `proxy.js` will have the HTML response re-written
+- TODO: inject actual scripts instead of "hello world" into repsonse body 
+- TODO: Add ability to provide a query string param (e.g. 'inject=v1') to inject the scripts from the desired variant dist folder
 
 
 ## To do
