@@ -1,7 +1,7 @@
 body {
-  $colour: red;
+  $colour: #ddd;
 
   display: block;
   background: $colour;
-  transform: translate(-50%, -50%);
+  // transform: translate(-50%, -50%);
 }

@@ -3,7 +3,10 @@ const fs = require('fs');
 const pth = require('path');
 
 const domains = [
-  'asos.com',
+  'www.asos.com',
+  'm.asos.com',
+  'my.asos.com',
+  'secure.asos.com',
 ];
 
 const isDomainMatch = (hostname) => {
@@ -26,6 +29,14 @@ const getMarkup = folder =>
 // AnyProxy rule config
 module.exports = {
   summary: 'Inject MVT offer code',
+  * beforeDealHttpsRequest(req) {
+    // Don't attempt to decrypt unless the domain matches
+    const hostname = req.host.replace(':443', '');
+    if (isDomainMatch(hostname)) {
+      return true;
+    }
+    return false;
+  },
   * beforeSendResponse(requestDetail, responseDetail) {
     const { hostname, headers, path } = requestDetail.requestOptions;
     const { response } = responseDetail;
