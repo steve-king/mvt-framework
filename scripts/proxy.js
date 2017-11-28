@@ -1,5 +1,6 @@
 const url = require('url');
 const fs = require('fs');
+const pth = require('path');
 
 const domains = [
   'asos.com',
@@ -16,12 +17,11 @@ const isDomainMatch = (hostname) => {
 const isHtmlRequest = requestHeaders =>
   requestHeaders.Accept && requestHeaders.Accept.indexOf('text/html') > -1;
 
-
 const isValidResponse = response =>
   response.statusCode === 200 || response.statusCode === 304;
 
 const getMarkup = folder =>
-  fs.readFileSync(`./dist/${folder}/offer.html`, 'utf-8');
+  fs.readFileSync(pth.resolve(process.cwd(), `dist/${folder}/offer.html`), 'utf-8');
 
 // AnyProxy rule config
 module.exports = {
@@ -43,13 +43,11 @@ module.exports = {
       console.log('VARIANT DETECTED', query.mvt);
 
       const markup = getMarkup(query.mvt);
+      const bodyString = response.body.toString();
 
       return {
         response: Object.assign({}, response, {
-          body: response.body.toString().replace(
-            '</body>',
-            `${markup}\n</body>`,
-          ),
+          body: bodyString.replace('</body>', `${markup}\n</body>`),
         }),
       };
     }

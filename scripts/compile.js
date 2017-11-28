@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { resolve, parse } = require('path');
 
-const distFolder = resolve(__dirname, 'dist');
+const distFolder = resolve(process.cwd(), 'dist');
 
 const writeFile = (filePath, fileData) => {
   fs.writeFile(filePath, fileData, (err) => {

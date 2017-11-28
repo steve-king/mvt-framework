@@ -42,7 +42,7 @@ module.exports = (env) => {
     plugins: [
       new ExtractTextPlugin('[name]/styles.css'),
       new WebpackShellPlugin({
-        onBuildEnd: ['node ./compile.js'], // Run our custom compile script
+        onBuildEnd: ['node ./scripts/compile.js'], // Run our custom compile script
         dev: false, // Allows script to run more than once (i.e on every watch)
       }),
     ],
