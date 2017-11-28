@@ -1,5 +1,5 @@
 body {
-  background: red;
-
+  $colour: red;
+  background: $colour;
   transform: translate(-50%, -50%);
 }
