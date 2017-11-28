@@ -1,28 +1,61 @@
+const url = require('url');
+const fs = require('fs');
+
 const domains = [
-  'steveking.info'
-]
+  'asos.com',
+];
 
+const isDomainMatch = (hostname) => {
+  let isMatch = false;
+  domains.forEach((domain) => {
+    isMatch = (domain.indexOf(hostname) > -1) ? true : isMatch;
+  });
+  return isMatch;
+};
+
+const isHtmlRequest = requestHeaders =>
+  requestHeaders.Accept && requestHeaders.Accept.indexOf('text/html') > -1;
+
+
+const isValidResponse = response =>
+  response.statusCode === 200 || response.statusCode === 304;
+
+const getMarkup = folder =>
+  fs.readFileSync(`./dist/${folder}/offer.html`, 'utf-8');
+
+// AnyProxy rule config
 module.exports = {
-  summary: 'a rule to modify response',
-  *beforeSendResponse(requestDetail, responseDetail) {
+  summary: 'Inject MVT offer code',
+  * beforeSendResponse(requestDetail, responseDetail) {
+    const { hostname, headers, path } = requestDetail.requestOptions;
+    const { response } = responseDetail;
+    const { query } = url.parse(path, true);
 
-    const { hostname, headers } = requestDetail.requestOptions;
-    const { statusCode } = responseDetail.response;
-    
     if (
-      hostname.indexOf(domains[0]) > -1 && // TODO: check each item in domains array
-      headers.Accept && headers.Accept.indexOf('text/html') > -1 && 
-      statusCode === 200
+      isDomainMatch(hostname) &&
+      isHtmlRequest(headers) &&
+      isValidResponse(response) &&
+      query.mvt !== undefined
     ) {
+      // eslint-disable-next-line no-console
       console.log('REQUEST to a targeted domain detected');
-    
-      const responseBody = responseDetail.response.body.toString();
-      const newResponse = Object.assign({}, responseDetail.response);
-      newResponse.body = responseBody.replace('</body>', '<h1>Hello from Any Proxy!</h1></body>');
-      
+      // eslint-disable-next-line no-console
+      console.log('VARIANT DETECTED', query.mvt);
+
+      const markup = getMarkup(query.mvt);
+
       return {
-        response: newResponse
+        response: Object.assign({}, response, {
+          body: response.body.toString().replace(
+            '</body>',
+            `${markup}\n</body>`,
+          ),
+        }),
       };
     }
-  }
+
+    return {
+      response,
+    };
+  },
 };

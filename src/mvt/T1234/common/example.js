@@ -1,4 +1,4 @@
 export default function () {
   // eslint-disable-next-line no-console
-  console.log('hello from lib example');
+  console.log('hello from common function example');
 }

@@ -27,6 +27,7 @@ SCSS files need to be imported into your JS so that webpack may compile them.
 - Any requests to matched domains listed in `proxy.js` will have the HTML response re-written
 - TODO: inject actual scripts instead of "hello world" into repsonse body 
 - TODO: Add ability to provide a query string param (e.g. 'inject=v1') to inject the scripts from the desired variant dist folder
+- TODO: Get this working on secure HTTPS pages
 
 
 ## To do
