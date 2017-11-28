@@ -1,16 +1,14 @@
 {
   "name": "mvt-framework",
   "version": "0.0.1",
-  "author": "",
-  "description": "",
+  "author": "ASOS Optimisation Team",
   "scripts": {
     "lint": "lint-staged",
     "clean": "rm -rf ./dist/*",
-    "serve": "nodemon ./proxy-server.js",
     "start": "npm run clean && webpack -p --watch",
     "build": "npm run clean && webpack -p",
-    "postbuild": "node ./compile.js",
-    "proxy": "anyproxy --port 8001 --rule ./proxy.js"
+    "postbuild": "node ./scripts/compile.js",
+    "proxy": "anyproxy --port 8001 --rule ./scripts/proxy.js"
   },
   "precommit": [
     "lint"
@@ -18,6 +16,10 @@
   "lint-staged": {
     "*.js": [
       "eslint",
+      "git add"
+    ],
+    "*.scss": [
+      "stylelint --syntax=scss",
       "git add"
     ]
   },
@@ -41,6 +43,9 @@
     "postcss-loader": "^2.0.9",
     "pre-commit": "^1.2.2",
     "sass-loader": "^6.0.6",
+    "stylelint": "^8.3.1",
+    "stylelint-config-recommended": "^2.0.0",
+    "stylelint-config-standard": "^18.0.0",
     "webpack": "^3.8.1",
     "webpack-shell-plugin": "^0.5.0"
   },
