@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs');;
+const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
@@ -14,17 +14,17 @@ const getEntries = (testFolderName) => {
   const entries = {};
   const testFolderPath = path.resolve(mvtFolderPath, testFolderName);
 
-  fs.readdirSync(testFolderPath).forEach(file => {
+  fs.readdirSync(testFolderPath).forEach((file) => {
     const fileName = path.parse(file).name;
     const fileExt = path.parse(file).ext;
-    
+
     if (fileExt === '.js') {
       entries[fileName] = path.resolve(testFolderPath, file);
     }
   });
 
   return entries;
-}
+};
 
 /**
  * Webpack config
@@ -32,39 +32,40 @@ const getEntries = (testFolderName) => {
 module.exports = (env) => {
   // The --env argument must be a string matching the test folder name in ./src/mvt/
   if (!env) {
+    // eslint-disable-next-line no-console
     console.error('ERROR: --env test directory name not provided');
-    return;
+    return false;
   }
 
   return {
     entry: getEntries(env),
     plugins: [
-      new ExtractTextPlugin(`[name]/styles.css`),
+      new ExtractTextPlugin('[name]/styles.css'),
       new WebpackShellPlugin({
-        onBuildEnd:['node ./compile.js'], // Run our custom compile script
+        onBuildEnd: ['node ./compile.js'], // Run our custom compile script
         dev: false, // Allows script to run more than once (i.e on every watch)
-      })
+      }),
     ],
     module: {
       loaders: [
         {
-          test: /\.js$/, 
-          exclude: /node_modules/, 
-          loader: "babel-loader"
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
         },
         {
           test: /\.scss$/,
           use: ExtractTextPlugin.extract({
             fallback: 'style-loader',
-            use: ['css-loader', 'sass-loader']
-          })
-        }
-      ]
+            use: ['css-loader', 'sass-loader'],
+          }),
+        },
+      ],
     },
     output: {
       path: path.resolve('./dist'),
       publicPath: '/mvt-framework/dist/',
-      filename: "[name]/script.js",
+      filename: '[name]/script.js',
     },
   };
-}
+};
