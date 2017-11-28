@@ -30,10 +30,10 @@ SCSS files need to be imported into your JS so that webpack may compile them. Ke
 - For this to work on secure (SSH) domains, you will need to run `./node_modules/.bin/anyproxy-ca` and follow the instructions to generate and trust the rootCA.crt
 
 
-### Pre-commit hooks:
+## Pre-commit hooks:
 We're using `stylelint` and `eslint` on a pre-commit hook so it's recommended that you install the relevant plugins to your text editor to flag help you fix any issues when they arise
 
-TODO:
+## TODO:
 - Port over and test/refactor the utils we need from the old Target repo
 - run unit tests? pre-commit hook for these
 - `README.md` must be present (and not empty) in each test folder

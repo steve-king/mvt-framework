@@ -4,6 +4,7 @@
   "author": "ASOS Optimisation Team",
   "scripts": {
     "lint": "lint-staged",
+    "check-readme": "node ./scripts/check-readme.js",
     "clean": "rm -rf ./dist/*",
     "start": "npm run clean && webpack -p --watch",
     "build": "npm run clean && webpack -p",
@@ -11,7 +12,8 @@
     "proxy": "anyproxy --port 8001 --rule ./scripts/proxy.js"
   },
   "precommit": [
-    "lint"
+    "lint",
+    "check-readme"
   ],
   "lint-staged": {
     "*.js": [
