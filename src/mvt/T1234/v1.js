@@ -1,8 +1,12 @@
 import './styles/v1.scss';
-import foo from '../../lib/example';
-import bar from './common/example';
+import Variant from '../../lib/Variant';
 
-foo();
-bar();
-// console.log('MVT Framework');
-// console.log('Hello from v1.js');
+const config = {
+  requiredElements: [
+    '.something',
+  ],
+};
+
+Variant(() => {
+
+}, config);
